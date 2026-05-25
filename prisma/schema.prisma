@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  password  String
+  projects  Project[]
+  brandKits BrandKit[]
+  createdAt DateTime  @default(now())
+}
+
+model Project {
+  id        String   @id @default(cuid())
+  name      String
+  status    String   @default("draft")
+  thumbnail String
+  updatedAt DateTime @updatedAt
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id])
+}
+
+model BrandKit {
+  id        String   @id @default(cuid())
+  name      String
+  colors    String
+  fonts     String
+  logoUrl   String
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id])
+  createdAt DateTime @default(now())
+}

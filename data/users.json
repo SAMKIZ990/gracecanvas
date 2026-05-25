@@ -1,0 +1,14 @@
+[
+  {
+    "id": "user-001",
+    "name": "GraceCanvas Admin",
+    "email": "demo@gracecanvas.com",
+    "password": "demo123"
+  },
+  {
+    "id": "user-7lz4etg",
+    "name": "Real User",
+    "email": "you@example.com",
+    "password": "s3cureP@ss"
+  }
+]
