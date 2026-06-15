@@ -1,36 +1,241 @@
+import { useState, type FormEvent } from 'react';
+import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
 import { Layout } from '@/components/Layout';
 
 export default function Auth() {
+  const router = useRouter();
+  const [isSigningUp, setIsSigningUp] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError(null);
+    setIsLoading(true);
+
+    const formData = new FormData(event.currentTarget);
+    const firstName = (formData.get('firstName') as string)?.trim() || '';
+    const lastName = (formData.get('lastName') as string)?.trim() || '';
+    const email = (formData.get('email') as string)?.trim() || '';
+    const password = formData.get('password') as string || '';
+    const confirmPassword = formData.get('confirmPassword') as string || '';
+
+    if (!email || !password) {
+      setError('Email and password are required.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (isSigningUp) {
+      if (password !== confirmPassword) {
+        setError('Passwords do not match.');
+        setIsLoading(false);
+        return;
+      }
+    }
+
+    if (!isSigningUp) {
+      const signInResult = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+      });
+
+      if (!signInResult?.error) {
+        router.push('/');
+        return;
+      }
+
+      setError('Invalid email or password.');
+      setIsLoading(false);
+      return;
+    }
+
+    const name = [firstName, lastName].filter(Boolean).join(' ') || email.split('@')[0];
+    const signupResponse = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    if (!signupResponse.ok) {
+      const result = await signupResponse.json().catch(() => ({}));
+      setError(result.error || 'Unable to sign you up.');
+      setIsLoading(false);
+      return;
+    }
+
+    const signInAfterSignup = await signIn('credentials', {
+      redirect: false,
+      email,
+      password,
+    });
+
+    if (!signInAfterSignup?.error) {
+      router.push('/');
+      return;
+    }
+
+    setError('Signed up successfully, but login failed. Please try again.');
+    setIsLoading(false);
+  }
+
   return (
     <Layout title="Authentication">
-      <section className="mx-auto max-w-2xl space-y-8 rounded-[32px] border border-white/10 bg-white/5 p-10 shadow-glow">
-        <div className="space-y-4">
-          <span className="inline-flex rounded-full bg-violet-500/15 px-4 py-2 text-sm font-semibold uppercase tracking-[0.24em] text-violet-200">
-            Authenticate
-          </span>
-          <h1 className="text-4xl font-semibold text-white">Sign in or create your ministry workspace.</h1>
-          <p className="text-lg text-slate-300">Use Google or email to get instant access to your brand kit, AI poster generator, and team dashboard.</p>
-        </div>
-
-        <div className="space-y-4">
-          <button className="w-full rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-100">Continue with Google</button>
-          <button className="w-full rounded-full border border-white/10 bg-slate-950/80 px-6 py-3 text-sm text-white transition hover:border-violet-400/30">Continue with Email</button>
-        </div>
-
-        <form className="space-y-5">
-          <div>
-            <label className="mb-2 block text-sm font-medium text-slate-300">Email</label>
-            <input type="email" placeholder="you@example.com" className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition focus:border-violet-400" />
-          </div>
-          <div>
-            <label className="mb-2 block text-sm font-medium text-slate-300">Password</label>
-            <input type="password" placeholder="••••••••" className="w-full rounded-3xl border border-white/10 bg-slate-950/80 px-4 py-3 text-white outline-none transition focus:border-violet-400" />
-          </div>
-          <button type="submit" className="w-full rounded-full bg-gradient-to-r from-slate-800 to-violet-600 px-6 py-3 text-sm font-semibold text-white transition hover:opacity-95">
-            Sign In
+      <div className="flex min-h-screen items-center justify-center bg-slate-950 px-4 py-6 sm:px-6">
+        <div className="relative w-full max-w-[420px] overflow-hidden rounded-[40px] border border-white/10 bg-slate-950/80 p-6 shadow-[0_30px_120px_rgba(15,23,42,0.45)] backdrop-blur-xl sm:p-8">
+          <button
+            type="button"
+            onClick={() => router.push('/')}
+            className="absolute right-3 top-3 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
+            aria-label="Close"
+          >
+            ✕
           </button>
-        </form>
-      </section>
+
+          <div className="space-y-4 text-center">
+            <h1 className="text-3xl font-semibold text-white">{isSigningUp ? 'Sign up' : 'Welcome back'}</h1>
+            <p className="text-sm leading-6 text-slate-400">
+              {isSigningUp
+                ? 'Create your account to start building your ministry workspace.'
+                : 'Log in to access your brand kit, AI poster creator, and dashboard.'}
+            </p>
+          </div>
+
+          <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
+            {isSigningUp ? (
+              <>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="block text-sm text-slate-300">
+                    <span className="mb-2 block">First name</span>
+                    <input
+                      name="firstName"
+                      type="text"
+                      placeholder="First name"
+                      className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-white outline-none transition focus:border-violet-400"
+                    />
+                  </label>
+                  <label className="block text-sm text-slate-300">
+                    <span className="mb-2 block">Last name</span>
+                    <input
+                      name="lastName"
+                      type="text"
+                      placeholder="Last name"
+                      className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-white outline-none transition focus:border-violet-400"
+                    />
+                  </label>
+                </div>
+                <label className="block text-sm text-slate-300">
+                  <span className="mb-2 block">Email</span>
+                  <input
+                    name="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-white outline-none transition focus:border-violet-400"
+                  />
+                </label>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="block text-sm text-slate-300">
+                    <span className="mb-2 block">Birth date</span>
+                    <input
+                      name="birthDate"
+                      type="date"
+                      className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-white outline-none transition focus:border-violet-400"
+                    />
+                  </label>
+                  <label className="block text-sm text-slate-300">
+                    <span className="mb-2 block">Phone number</span>
+                    <input
+                      name="phone"
+                      type="tel"
+                      placeholder="(123) 456-7890"
+                      className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-white outline-none transition focus:border-violet-400"
+                    />
+                  </label>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="block text-sm text-slate-300">
+                    <span className="mb-2 block">Password</span>
+                    <input
+                      name="password"
+                      type="password"
+                      placeholder="••••••••"
+                      className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-white outline-none transition focus:border-violet-400"
+                    />
+                  </label>
+                  <label className="block text-sm text-slate-300">
+                    <span className="mb-2 block">Confirm password</span>
+                    <input
+                      name="confirmPassword"
+                      type="password"
+                      placeholder="••••••••"
+                      className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-white outline-none transition focus:border-violet-400"
+                    />
+                  </label>
+                </div>
+              </>
+            ) : (
+              <>
+                <label className="block text-sm text-slate-300">
+                  <span className="mb-2 block">Email</span>
+                  <input
+                    name="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-white outline-none transition focus:border-violet-400"
+                  />
+                </label>
+                <label className="block text-sm text-slate-300">
+                  <span className="mb-2 block">Password</span>
+                  <input
+                    name="password"
+                    type="password"
+                    placeholder="••••••••"
+                    className="w-full rounded-3xl border border-white/10 bg-slate-900/80 px-4 py-3 text-white outline-none transition focus:border-violet-400"
+                  />
+                </label>
+              </>
+            )}
+
+            {error ? <p className="text-sm text-rose-400">{error}</p> : null}
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="flex w-full items-center justify-center rounded-full bg-gradient-to-r from-slate-800 to-violet-600 px-6 py-3 text-sm font-semibold text-white transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isLoading ? 'Working…' : isSigningUp ? 'Sign Up' : 'Log In'}
+            </button>
+          </form>
+
+          <div className="mt-4 flex flex-col gap-3 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+            <span>{isSigningUp ? 'Already have an account?' : 'New here?'}</span>
+            <button
+              type="button"
+              onClick={() => {
+                setError(null);
+                setIsSigningUp(!isSigningUp);
+              }}
+              className="font-semibold text-white transition hover:text-violet-300"
+            >
+              {isSigningUp ? 'Log In' : 'Sign Up'}
+            </button>
+          </div>
+
+          <div className="my-6 flex items-center gap-3 text-xs text-slate-500 before:block before:h-px before:flex-1 before:bg-slate-700 after:block after:h-px after:flex-1 after:bg-slate-700">
+            or
+          </div>
+
+          <button
+            type="button"
+            onClick={() => signIn('google', { callbackUrl: '/' })}
+            className="inline-flex w-full items-center justify-center gap-3 rounded-full border border-white/10 bg-slate-900/90 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+          >
+            <span>{isSigningUp ? 'Sign up with Google' : 'Continue with Google'}</span>
+          </button>
+        </div>
+      </div>
     </Layout>
   );
 }

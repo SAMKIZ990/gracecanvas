@@ -1,70 +1,54 @@
-\# GraceCanvas
+# GraceCanvas
+
+>A Next.js + TypeScript application for an AI-powered church poster and flyer design platform.
+
+## Files
+__________________________________________________________________________
+
+ `src/pages/index.tsx` – Landing page for GraceCanvas
+- `src/pages/pricing.tsx` – Pricing and subscription plans
+- `src/pages/templates.tsx` – Template marketplace overview
+- `src/pages/ai-generator.tsx` – AI poster generation workflow
+- `src/pages/editor.tsx` – Poster editor workspace
+- `src/pages/brand-kit.tsx` – Brand kit manager and asset system
+- `src/pages/dashboard.tsx` – User workspace and ministry dashboard
+
+- `src/pages/auth.tsx` – Authentication page
+
+- `src/pages/admin.tsx` – Admin dashboard
+
+- `src/styles/globals.css` – Tailwind and global styles
+
+- `src/components/Layout.tsx` – Shared layout wrapper
+
+- `src/pages/api/` – Local backend API routes for templates, pricing, auth, projects, and AI
+- `ARCHITECTURE.md` – Full architecture, schema, and SaaS design documentation
+
+## Platform concept
+__________________________________________________________________________
 
 
 
-A Next.js + TypeScript application for an AI-powered church poster and flyer design platform.
+>GraceCanvas is designed to support:
 
 
 
-\## Files
+- Uploading church poster references for AI style analysis
+
+- Generating editable gospel poster concepts
+
+- Drag-and-drop poster editing with modern design tools
+
+- Multi-format export (PNG, JPG, PDF, social sizes)
+
+- Template marketplace and brand kit manager
+
+- Church workspace collaboration and subscription tiers
 
 
+## How to use
 
-\- `src/pages/index.tsx` – Landing page for GraceCanvas
-
-\- `src/pages/pricing.tsx` – Pricing and subscription plans
-
-\- `src/pages/templates.tsx` – Template marketplace overview
-
-\- `src/pages/ai-generator.tsx` – AI poster generation workflow
-
-\- `src/pages/editor.tsx` – Poster editor workspace
-
-\- `src/pages/brand-kit.tsx` – Brand kit manager and asset system
-
-\- `src/pages/dashboard.tsx` – User workspace and ministry dashboard
-
-\- `src/pages/auth.tsx` – Authentication page
-
-\- `src/pages/admin.tsx` – Admin dashboard
-
-\- `src/styles/globals.css` – Tailwind and global styles
-
-\- `src/components/Layout.tsx` – Shared layout wrapper
-
-\- `src/pages/api/` – Local backend API routes for templates, pricing, auth, projects, and AI
-
-\- `ARCHITECTURE.md` – Full architecture, schema, and SaaS design documentation
-
-
-
-\## Platform concept
-
-
-
-GraceCanvas is designed to support:
-
-
-
-\- Uploading church poster references for AI style analysis
-
-\- Generating editable gospel poster concepts
-
-\- Drag-and-drop poster editing with modern design tools
-
-\- Multi-format export (PNG, JPG, PDF, social sizes)
-
-\- Template marketplace and brand kit manager
-
-\- Church workspace collaboration and subscription tiers
-
-
-
-\## How to use
-
-
-
-\### Local development
+### Local development
 
 
 
@@ -78,9 +62,7 @@ GraceCanvas is designed to support:
 
 5\. Open `http://localhost:3000` to preview the Next.js frontend.
 
-
-
-\## Local database
+## Local database
 
 
 
@@ -90,41 +72,32 @@ GraceCanvas is designed to support:
 
 \- If you want a fresh database, delete `dev.db` and restart the app.
 
+## Notes
 
 
-\## Notes
-
-
-
-This app is now a working Next.js prototype with a local backend and database.
+>This app is now a working Next.js prototype with a local backend and database.
 
 It includes:
 
 
+- Server API routes in `src/pages/api/`
+- Prisma + SQLite persistence for users, projects, and brand kits
 
-\- Server API routes in `src/pages/api/`
-
-\- Prisma + SQLite persistence for users, projects, and brand kits
-
-\- Authentication via email/password and token validation
-
-\- AI endpoints with OpenAI integration fallback support
+- Authentication via email/password and token validation
+- AI endpoints with OpenAI integration fallback support
 
 
+>A full production implementation would still add:
 
-A full production implementation would still add:
+- Fabric.js / Konva.js editor integration
 
+- Stripe subscription flow
 
+- Hosted PostgreSQL or cloud database
 
-\- Fabric.js / Konva.js editor integration
+- Secure sessions and production auth flows
 
-\- Stripe subscription flow
-
-\- Hosted PostgreSQL or cloud database
-
-\- Secure sessions and production auth flows
-
-\- Image upload and export pipelines
+- Image upload and export pipelines
 
 
 

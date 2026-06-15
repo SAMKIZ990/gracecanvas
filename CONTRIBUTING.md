@@ -1,36 +1,19 @@
-\# 🤝 Contributing to GraceCanvas
-
-
+# 🤝 Contributing to GraceCanvas
 
 Thank you for your interest in contributing to GraceCanvas.
-
-
-
 We welcome developers, designers, and contributors who want to help improve AI-powered church media creation tools.
 
+---
 
 
-\---
+## 🚀 Getting Started
 
-
-
-\## 🚀 Getting Started
-
-
-
-\### 1. Fork the Repository
-
-
-
+### 1. Fork the Repository
 Create your own copy of the project by clicking the \*\*Fork\*\* button on GitHub.
 
+---
 
-
-\---
-
-
-
-\### 2. Clone Your Fork
+### 2. Clone Your Fork
 
 
 

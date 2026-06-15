@@ -34,6 +34,38 @@ textarea {
   background: rgba(99, 102, 241, 0.32);
 }
 
+.icon,
+.icon svg,
+.icon img,
+.icon-button svg,
+.icon-button img {
+  display: inline-flex;
+  width: 1.25rem;
+  height: 1.25rem;
+  max-width: 100%;
+  max-height: 100%;
+  vertical-align: middle;
+}
+
+.icon-responsive {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .icon-responsive {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .icon-responsive {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
 .text-shadow-glow {
   text-shadow: 0 20px 40px rgba(99, 102, 241, 0.18);
 }
