@@ -1,0 +1,163 @@
+Build the GraceCanvas UI. No backend logic. Static components only.
+
+━━━━━━━━━━━━━━━━━━━━━━
+DESIGN TOKENS
+━━━━━━━━━━━━━━━━━━━━━━
+
+:root {
+  --navy:        #0D1B3E;
+  --navy-mid:    #1A2E5A;
+  --navy-light:  #243D75;
+  --gold:        #C8A97A;
+  --gold-light:  #E8C87A;
+  --muted:       #7A7A9A;
+  --surface:     #F7F5F0;
+  --border:      rgba(200,169,122,0.2);
+}
+
+Fonts: Georgia serif (display) · Inter (UI) · JetBrains Mono (code)
+Radius: 12px cards · 8px inputs/buttons · 999px pills
+Borders: 0.5px solid var(--border) everywhere
+No shadows. No gradients. Flat surfaces only.
+
+━━━━━━━━━━━━━━━━━━━━━━
+NAVBAR
+━━━━━━━━━━━━━━━━━━━━━━
+
+sticky top-0, backdrop-blur-md, bg-navy/80
+border-bottom: 0.5px solid var(--border)
+height: 60px, px-8
+
+Left:
+  Circle badge (navy, gold brush stroke) + "GraceCanvas" wordmark
+  Georgia serif, gold "Grace" + white "Canvas"
+
+Center:
+  nav links — Features · Templates · Pricing · API
+  14px, text-white/60, hover:text-gold, transition
+
+Right:
+  "Log in" ghost button
+  "Get started" gold fill button, text-navy, font-medium
+
+━━━━━━━━━━━━━━━━━━━━━━
+HERO SECTION
+━━━━━━━━━━━━━━━━━━━━━━
+
+bg: --navy, full viewport height, flex center
+text-align: center, max-width 720px, mx-auto
+
+Eyebrow:
+  "AI CHURCH DESIGN STUDIO"
+  11px, letter-spacing 4px, text-gold, uppercase, mb-6
+
+H1:
+  "Design your ministry."
+  Georgia serif, 68px, font-bold, text-white, line-height 1.1
+  mb-4
+
+Subhead:
+  "Generate, edit, and export gospel posters in seconds."
+  18px, text-white/50, mb-10
+
+Prompt bar:
+  bg-navy-mid, border 0.5px gold/30, rounded-xl
+  px-5 py-4, flex row, gap-3, max-width 620px, mx-auto
+  Left: text input placeholder "Describe your poster..."
+        text-white/40, bg-transparent, flex-1, outline-none
+  Right: "Generate →" button
+         bg-gold, text-navy, font-medium, px-4 py-2, rounded-lg
+
+CTA row below (mt-6, gap-3):
+  "Browse templates" — border gold/40, text-gold, px-5 py-2.5, rounded-lg
+  "See examples" — text-white/40, underline, text-sm
+
+━━━━━━━━━━━━━━━━━━━━━━
+MARQUEE STRIP
+━━━━━━━━━━━━━━━━━━━━━━
+
+bg-navy-mid, border-y 0.5px var(--border), py-4
+Label: "Powered by" — 11px muted, mr-8
+Logos row: OpenAI · FLUX · Stability AI · Ideogram · Anthropic · Replicate
+opacity-40, grayscale, hover:opacity-70 hover:grayscale-0
+Auto-scroll left, infinite, gap-12
+
+━━━━━━━━━━━━━━━━━━━━━━
+CAPABILITIES GRID
+━━━━━━━━━━━━━━━━━━━━━━
+
+bg-surface, section py-24 px-8
+Eyebrow + H2 centered (same pattern as hero)
+H2: "Everything your ministry needs"
+
+2-column grid, gap-4, max-width 900px mx-auto:
+
+Each card — bg-white, border 0.5px --border, rounded-xl, p-6:
+  Top: icon (Lucide, 20px, text-gold) + title (15px, font-500, text-navy)
+  Body: 13px, text-muted, line-height 1.6, mt-2
+  Bottom: "Try it →" text-gold text-sm, mt-4
+
+Cards:
+  ti-wand        "AI Poster Generator"    "Describe or upload reference; AI builds it."
+  ti-layout-grid "Template Marketplace"   "200+ gospel poster templates by theme."
+  ti-brush       "Drag & Drop Editor"     "Move, restyle, resize every element."
+  ti-palette     "Brand Kit Manager"      "Store colors, fonts, logos. Auto-apply."
+  ti-download    "Multi-format Export"    "PNG, PDF, JPG. All social + print sizes."
+  ti-users       "Ministry Workspace"     "Team access, roles, shared brand kits."
+
+━━━━━━━━━━━━━━━━━━━━━━
+PRICING SECTION
+━━━━━━━━━━━━━━━━━━━━━━
+
+bg-navy, py-24 px-8, text-center
+
+Toggle: Monthly / Yearly pill switcher
+  bg-navy-mid, rounded-full, active tab bg-gold text-navy
+
+3 cards, max-width 860px, mx-auto, grid 3-col, gap-4:
+
+Base card style:
+  bg-navy-mid, border 0.5px var(--border), rounded-xl, p-6, text-left
+
+Free card:
+  Price: $0  ·  "10 posters/month"
+  Features list: 5 items, checkmark icon text-gold
+
+Pro card (FEATURED):
+  border: 1.5px solid --gold
+  Badge: "Most popular" — bg-gold/15 text-gold pill, top-right
+  Price: $12/mo
+  CTA: bg-gold text-navy w-full rounded-lg py-2.5 font-medium
+
+Ministry card:
+  Price: $29/mo  ·  "5 seats"
+  CTA: border gold text-gold w-full rounded-lg py-2.5
+
+━━━━━━━━━━━━━━━━━━━━━━
+FOOTER
+━━━━━━━━━━━━━━━━━━━━━━
+
+bg-navy, border-top 0.5px var(--border), py-10 px-8
+flex row, justify-between, align-center
+
+Left:  logo mark + "GraceCanvas" wordmark, 14px
+Center: Features · Templates · Pricing · Privacy · Terms
+        13px, text-white/40, gap-6
+Right: ti-brand-twitter · ti-brand-instagram · ti-brand-github
+       20px, text-white/30, hover:text-gold
+
+Bottom row (mt-8, border-top, pt-6):
+  "© 2025 GraceCanvas. Built for the church."
+  13px, text-white/20, text-center
+
+━━━━━━━━━━━━━━━━━━━━━━
+GLOBAL RULES
+━━━━━━━━━━━━━━━━━━━━━━
+
+- No shadows anywhere
+- No gradients anywhere  
+- All transitions: 150ms ease
+- Hover states: opacity shift or gold accent only
+- All icons: Lucide outline, 20px default
+- All borders: 0.5px (never 1px+) except featured card (1.5px)
+- Scrollbar: hidden on marquee, thin gold on editor panels
